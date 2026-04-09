@@ -1,0 +1,26 @@
+# Pull authorized_key from Ubuntu Launchpad
+
+sudo apt install -y curl screen && \
+mkdir -p ~/.ssh && \
+curl https://launchpad.net/your_link | tee ~/.ssh/authorized_keys && \
+chmod 700 ~/.ssh && \
+chmod 600 ~/.ssh/authorized_keys
+
+# disable regular log in using password
+
+sudo tee /etc/ssh/sshd_config.d/user_ssh.conf > /dev/null << 'EOF'
+# Xsights SSH config file
+# -----------------------
+# will disable the root user from logging into SSH daemon
+PermitRootLogin no
+#
+# will disable regular user from logging in with a password
+PasswordAuthentication no
+PermitEmptyPasswords no
+#
+EOF
+
+sudo systemctl reload ssh && \
+sudo systemctl daemon-reload
+
+
